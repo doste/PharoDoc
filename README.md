@@ -33,4 +33,6 @@ The corresponding files will be put in the _site folder, cd into this, and then
   jekyll serve
 ```
 
- Now, go to http://127.0.0.1:4000 (or whatever address Jekyll generated) and view the docs! :D
+ Now, go to http://127.0.0.1:4000 (or whatever address Jekyll generated) and view the site! :D
+
+ DISCLAIMER: The generated site is **aesthetically ugly**. What matters is the code behind it )?
