@@ -4,7 +4,6 @@ Generate site for documenting Pharo code.
 
 Dependencies:
 [Ecstatic](https://github.com/guillep/ecstatic)
-
 [Jekyll](https://jekyllrb.com/)
 
 How to use:
