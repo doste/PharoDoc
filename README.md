@@ -4,6 +4,7 @@ Generate site for documenting Pharo code.
 
 Dependencies:
 [Ecstatic](https://github.com/guillep/ecstatic)
+
 [Jekyll](https://jekyllrb.com/)
 
 How to use:
@@ -15,7 +16,7 @@ How to use:
  ```smalltalk
     docsSite := DostePharoDoc new.
     docsSite classesToShow: {Collection. GeometryObject. HEAbstractExported. BitBlt. AbstractDebugger}.
-    docsSite pathToFolder: 'Users/user1/ecstatic-example'
+    docsSite pathToFolder: 'Users/user1/ecstatic-example'.
     docsSite generateDocPages.
  ```
 Here we are configuring it to show the classes: Collection, GeometryObject, HEAbstractExported, BitBlt and AbstractDebugger.
