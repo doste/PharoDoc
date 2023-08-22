@@ -1,8 +1,38 @@
+"
+I represent a Docs generator for Pharo classes.
+
+Given a set of classes I generate a site to show all their methods and its corresponding comments.
+
+I work by generating .pillar files from the methods and their comments of all the given classes.
+Then, said files will be given to Ecstatic to generate the site containting all the info """"nicely"""" formatted.
+
+To work properly I need to know: 
+	1) The set of classes to show the docs for.
+	2) A file path to the folder where I'll put all the generated .pillar files, so Ecstatic then can generate the proper site.
+	
+The main method to generate the docs is: generateDocPages
+"
 Class {
 	#name : #DostePharoDoc,
 	#superclass : #Object,
+	#instVars : [
+		'classesToShow',
+		'pathToFolder'
+	],
 	#category : #'2tPharoDoc'
 }
+
+{ #category : #accessing }
+DostePharoDoc >> classesToShow [
+
+	^ classesToShow
+]
+
+{ #category : #accessing }
+DostePharoDoc >> classesToShow: anObject [
+
+	classesToShow := anObject
+]
 
 { #category : #'as yet unclassified' }
 DostePharoDoc >> concatCollection: aCollection withOtherCollection: anotherCollection [
@@ -45,16 +75,14 @@ DostePharoDoc >> concatCollection: aCollection withOtherCollection: anotherColle
 
 { #category : #'doc-generation' }
 DostePharoDoc >> generateDocPages [
-
-	| classesToShow |
 	
 	"Clases elegidas de manera completamente arbitraria."
-	classesToShow := {Collection. GeometryObject. HEAbstractExported. BitBlt. AbstractDebugger}.
+	"self classesToShow: {Collection. GeometryObject. HEAbstractExported. BitBlt. AbstractDebugger}."
 	
-	self generateIndexPageForClasses: classesToShow.
+	self generateIndexPageForClasses: self classesToShow.
 
 	"Aca se generan las paginas para cada una de las clases y subclases:"
-	classesToShow do: [ :aClassToShow | 
+	(self classesToShow) do: [ :aClassToShow | 
 										 (aClassToShow  subclasses) do: [ :aSubclass | self generatePageForClass: aSubclass ]
 	.]
 ]
@@ -138,7 +166,8 @@ DostePharoDoc >> generateIndexPageForClasses: allTheClasses [
 	En este metodo, por cada una de las subclases de cada classToShow, generamos su 'index page', esta terminara siendo una seccion de toda la Index Page."
 	| fileName |
 	
-	fileName := '/Users/juanidoste/ecstatic-example/index.pillar'.
+	"fileName := '/Users/juanidoste/ecstatic-example/index.pillar'."
+	fileName := self pathToFolder, '/index.pillar'.
 	fileName asFileReference writeStreamDo: [ :w | 
 																					w truncate: 0.
 																					w nextPutAll: '!PharoDoc'.
@@ -156,7 +185,7 @@ DostePharoDoc >> generatePageForClass: aClass [
 	| allTheMethods fileName |
 	
 	allTheMethods := (aClass methods) reject: [ :method | method comment isNil].   "Ignoraramos aquellos metodos que no tienen comentarios."
-	fileName := '/Users/juanidoste/ecstatic-example/class', aClass printString, '.pillar'.
+	fileName := self pathToFolder, '/class', aClass printString, '.pillar'.
 
 	fileName asFileReference writeStreamDo: [ :w | 
 																					w nextPutAll: '!PharoDoc'.
@@ -273,4 +302,16 @@ DostePharoDoc >> getSubclassesOfClassRecursive: aClass [
 		^ subClasesToReturn
 		
 		
+]
+
+{ #category : #accessing }
+DostePharoDoc >> pathToFolder [
+
+	^ pathToFolder
+]
+
+{ #category : #accessing }
+DostePharoDoc >> pathToFolder: anObject [
+
+	pathToFolder := anObject
 ]
